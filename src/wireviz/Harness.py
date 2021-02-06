@@ -4,11 +4,13 @@
 from graphviz import Graph
 from collections import Counter
 from typing import List, Union
+from dataclasses import dataclass
 from pathlib import Path
 from itertools import zip_longest
 import re
 
 from wireviz import wv_colors, __version__, APP_NAME, APP_URL
+from wireviz.DataClasses import Metadata, Options, Connector, Cable
 from wireviz.DataClasses import Connector, Cable, MatePin, MateComponent
 from wireviz.wv_colors import get_color_hex
 from wireviz.wv_gv_html import nested_html_table, html_colorbar, html_image, \
@@ -19,11 +21,12 @@ from wireviz.wv_html import generate_html_output
 from wireviz.wv_helper import awg_equiv, mm2_equiv, tuplelist2tsv, flatten2d, \
     open_file_read, open_file_write, is_arrow
 
+@dataclass
 class Harness:
+    metadata: Metadata
+    options: Options
 
-    def __init__(self):
-        self.color_mode = 'SHORT'
-        self.mini_bom_mode = True
+    def __post_init__(self):
         self.connectors = {}
         self.cables = {}
         self.mates = []
@@ -245,7 +248,7 @@ class Harness:
                 wireinfo = []
                 if cable.show_wirenumbers:
                     wireinfo.append(str(i))
-                colorstr = wv_colors.translate_color(connection_color, self.color_mode)
+                colorstr = wv_colors.translate_color(connection_color, self.options.color_mode)
                 if colorstr:
                     wireinfo.append(colorstr)
                 if cable.wirelabels:
@@ -405,7 +408,7 @@ class Harness:
         with open_file_write(f'{filename}.bom.tsv') as file:
             file.write(tuplelist2tsv(bomlist))
         # HTML output
-        generate_html_output(filename, bomlist)
+        generate_html_output(filename, bomlist, self.metadata)
 
     def bom(self):
         if not self._bom:
