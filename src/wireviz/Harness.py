@@ -27,6 +27,8 @@ class Harness:
     options: Options
 
     def __post_init__(self):
+        self.color_mode = 'SHORT'
+        self.mini_bom_mode = True
         self.connectors = {}
         self.cables = {}
         self.mates = []
