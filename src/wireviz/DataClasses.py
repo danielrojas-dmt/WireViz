@@ -45,7 +45,7 @@ class Options:
     bgcolor: Color = 'WH'
     bgcolor_node: Optional[Color] = 'WH'
     color_mode: ColorMode = 'SHORT'
-    mini_bom_mode: bool = True
+    mini_bom_mode: bool = False
 
 
 @dataclass
