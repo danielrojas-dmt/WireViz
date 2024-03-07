@@ -249,15 +249,19 @@ class Harness:
                 wirehtml.append(f'    <td><!-- {i}_in --></td>')
                 wirehtml.append(f'    <td>')
 
-                wireinfo = []
-                if cable.show_wirenumbers:
-                    wireinfo.append(str(i))
-                colorstr = wv_colors.translate_color(connection_color, self.options.color_mode)
-                if colorstr:
-                    wireinfo.append(colorstr)
-                if cable.wirelabels:
-                    wireinfo.append(wirelabel if wirelabel is not None else '')
-                wirehtml.append(f'     {":".join(wireinfo)}')
+                if cable.show_wireinfo:
+                    wireinfo = []
+                    if cable.show_wirenumbers:
+                        wireinfo.append(str(i))
+                    colorstr = wv_colors.translate_color(connection_color, self.options.color_mode)
+                    if colorstr:
+                        wireinfo.append(colorstr)
+                    if cable.wirelabels:
+                        wireinfo.append(wirelabel if wirelabel is not None else '')
+                    wirehtml.append(f'     {":".join(wireinfo)}')
+
+                else:
+                    wirehtml.append(' &nbsp;')
 
                 wirehtml.append(f'    </td>')
                 wirehtml.append(f'    <td><!-- {i}_out --></td>')
